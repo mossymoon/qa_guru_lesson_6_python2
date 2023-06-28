@@ -5,12 +5,11 @@ def test_dark_theme_by_time():
     """
     Протестируйте правильность переключения темной темы на сайте в зависимости от времени
     """
-    current_time = time(hour=23)
+    current_time = time(hour=5)
 
-    if current_time.hour >= 22 and current_time.hour <= 6:
-        is_dark_theme = True
-        assert is_dark_theme is True
-        print("Dark Theme True")
+    is_dark_theme = current_time.hour >= 22 or current_time.hour <= 6
+    assert is_dark_theme is True
+
 
 
 def test_dark_theme_by_time_and_user_choice():
@@ -21,25 +20,24 @@ def test_dark_theme_by_time_and_user_choice():
     dark_theme_enabled_by_user = False - Темная тема выключена
     dark_theme_enabled_by_user = None - Пользователь не сделал выбор (используется переключение по времени системы)
     """
-    current_time = time(hour=16)
-    dark_theme_enabled_by_user = True
+    current_time = time(hour=23)
+    dark_theme_enabled_by_user = None
+    is_dark_theme = None
     # TODO переключите темную тему в зависимости от времени суток,
     #  но учтите что темная тема может быть включена вручную
 
-    is_dark_theme = None
     if dark_theme_enabled_by_user is True:
         is_dark_theme = True
     elif dark_theme_enabled_by_user is False:
         is_dark_theme = False
     else:
         if dark_theme_enabled_by_user is None:
-            if current_time.hour >= 22 and current_time.hour <= 6:
+            if 6 <= current_time.hour >= 22:
                 is_dark_theme = True
             else:
                 is_dark_theme = False
 
     assert is_dark_theme is True
-
 
 def test_find_suitable_user():
     """
@@ -83,11 +81,10 @@ def test_find_suitable_user():
 # >>> open_browser(browser_name="Chrome")
 # "Open Browser [Chrome]"
 
-def print_names(func, *args):
+def print_func_names(func, *args):
     func_name = func.__name__.replace("_", " ").title()
     args_result = ", ".join([*args])
     result = f"{func_name} [{args_result}]"
-
     print(result)
     return result
 
@@ -99,15 +96,16 @@ def test_readable_function():
 
 
 def open_browser(browser_name):
-    actual_result = open(browser_name)
+    actual_result = print_func_names(open_browser, browser_name)
     assert actual_result == "Open Browser [Chrome]"
 
 
 def go_to_companyname_homepage(page_url):
-    actual_result = f"Go To Companyname Homepage [{page_url}]"
+    actual_result = print_func_names(go_to_companyname_homepage, page_url)
     assert actual_result == "Go To Companyname Homepage [https://companyname.com]"
 
 
 def find_registration_button_on_login_page(page_url, button_text):
-    actual_result = f"Find Registration Button On Login Page [{page_url}, {button_text}]"
+    actual_result = print_func_names(find_registration_button_on_login_page, page_url, button_text)
+    print(actual_result)
     assert actual_result == "Find Registration Button On Login Page [https://companyname.com/login, Register]"
